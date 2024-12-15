@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>plane over finite field</title>
+<style>
+html { height: 100%; width: 100%;}
+body { height: 100%; width: 100%; margin: 0; padding: 0; display: flex;}
+
+square
+{
+    box-sizing: border-box;
+    width:calc(100% / 7);
+    height:calc(100% / 7);
+    float:left;
+    border:1px solid black;
+}
+
+#plane
+{
+    box-sizing: border-box;
+    width:100vmin;
+    height:100vmin;
+    margin: auto;
+}
+
+</style>
+
+<script type="text/javascript">
+function to_coord(n) {
+    return [n % 7,6-Math.floor(n/7)];
+}
+function to_num(x,y){
+    return 7*(6-y)+x;
+}
+</script>
+
+</head>
+<body>
+<div id="plane">
+</div>
+
+<script type="text/javascript">
+for (var i=0; i< 49; i++){
+    let div = document.createElement("square");
+    div.id = i;
+    div.backgroundColor = 'white';
+    div.onclick = function draw_subspace(){
+        var el = document.getElementById(div.id);
+        for (var j=0; j< 49; j++){
+            document.getElementById(j).style.backgroundColor = 'white';
+        }
+        var coord = to_coord(div.id);
+        for (var k=0; k< 7; k++){
+        document.getElementById(to_num((k*coord[0]) % 7,(k*coord[1]) % 7)).style.backgroundColor ='CornflowerBlue';
+    }
+}
+    document.getElementById("plane").appendChild(div);
+}
+</script>
+
+</body>
+</html>

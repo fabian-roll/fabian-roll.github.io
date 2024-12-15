@@ -1,0 +1,27 @@
+baseURL = "https://roll.science/"
+languageCode = "en-us"
+title = "Fabian Roll"
+theme = "blowfish"
+
+[params]
+  description = "My personal website"
+
+  [params.author]
+    name = "Fabian Roll"
+    image = "profile_image.jpg"
+    links = [
+      {linkedin ="https://www.linkedin.com/in/fabian-roll/"},
+      {github ="https://github.com/fabian-roll"},
+      {google-scholar ="https://scholar.google.de/citations?user=9euWfrEAAAAJ&hl=de"}
+      ]
+      
+[menu]
+  [[menu.main]]
+    name = "Research"
+    url = "/research"
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+
+[params.list]
+  showTableOfContents = true 

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>coordinate system</title>
+
+<script type="text/javascript" src="https://cindyjs.org/dist/v0.8.8/Cindy.js"></script>
+
+<style>
+html { height: 100%; width: 100%;}
+body { height: 100%; width: 100%; margin: 0; padding: 0; display: flex;}
+
+#CSCanvas
+{
+    box-sizing: border-box;
+    width:100vmin;
+    height:100vmin;
+    margin: auto;
+}
+</style>
+
+<script id="grid" type="text/x-cindyscript">
+drawarrow(a,b,col):=(
+   n=b-a;
+   n=n/|n|*.5;
+   p=(n_2,-n_1);
+   draw(a,b,color->col,size->3);
+   draw(b-n*.4+p*.07,b,color->col,size->3);
+   draw(b-n*.4-p*.07,b,color->col,size->3);
+);
+
+repeat(4,
+draw(line((0,1,-(#-1))),color->(169/255,169/255,169/255),size->1);
+draw(line((0,1,#-1)),color->(169/255,169/255,169/255),size->1);
+draw(line((1,0,-(#-1))),color->(169/255,169/255,169/255),size->1);
+draw(line((1,0,#-1)),color->(169/255,169/255,169/255),size->1);
+);
+drawarrow((0,0),((1,0,1)).xy,(169/255,169/255,169/255));
+drawarrow((0,0),((0,1,1)).xy,(169/255,169/255,169/255));
+
+O=[0,0,1];
+ynum=ceil(5/|[B.x,B.y]*[-A.y/|A.xy|,A.x/|A.xy|]|);
+xnum=ceil(5/|[A.x,A.y]*[-B.y/|B.xy|,B.x/|B.xy|]|);
+repeat(ynum,
+  AS=[A.x,A.y,0]+[(#-1)*B.x,(#-1)*B.y,1];
+  OS=[(#-1)*B.x,(#-1)*B.y,1];
+  draw(join(AS,OS));
+  draw(join([-AS.x,-AS.y,1],[-OS.x,-OS.y,1]));
+);
+repeat(xnum,
+  BS=[B.x,B.y,0]+[(#-1)*A.x,(#-1)*A.y,1];
+  OS=[(#-1)*A.x,(#-1)*A.y,1];
+  draw(join(BS,OS));
+  draw(join([-BS.x,-BS.y,1],[-OS.x,-OS.y,1]));
+);
+
+M=[[A.x,B.x],[A.y,B.y]];
+inverseM=inverse(M);
+drawtext((-2.9,-1.8), "$B=\{\begin{pmatrix}"+A.x+" \\"+A.y+"\end{pmatrix},\begin{pmatrix}"+B.x+" \\"+B.y+"\end{pmatrix}\}$",size->textSize);
+drawtext((0.1,-1.8), "$T_B^{\{e_1,e_2\}}=\begin{pmatrix}"+inverseM.x.x+"&"+ inverseM.x.y+ " \\"+inverseM.y.x+"&"+inverseM.y.y+"\end{pmatrix}$",size->textSize);
+drawtext((-2.9,-2.5), "$v=\begin{pmatrix}"+v.x+" \\"+v.y+"\end{pmatrix}$",size->textSize);
+coordofv=inverseM*v.xy;
+drawtext((0.1,-2.5),"$T_B^{\{e_1,e_2\}}\cdot v=\begin{pmatrix}"+coordofv.x+" \\"+coordofv.y+"\end{pmatrix}$" , color->(1,0,0),size->textSize);
+
+drawarrow((0,0),coordofv.x*A.xy,(0,1,0));
+drawarrow(coordofv.x*A.xy,v,(0,1,0));
+drawarrow((0,0),coordofv.y*B.xy,(0,1,0));
+drawarrow(coordofv.y*B.xy,v,(0,1,0));
+
+drawarrow((0,0),A.xy,(1,0,0));
+drawarrow((0,0),B.xy,(1,0,0));
+</script>
+
+<script type="text/javascript">
+cdy=CindyJS({
+scripts: "cs*",
+scripts: "grid",
+defaultAppearance: { fontFamily: "sans-serif", lineSize: 1, pointSize: 5.0, textsize: 20.0 },
+angleUnit: "?",
+geometry: [
+{ name: "A", type: "Free", pos: [ 1, 1, 1], color: [ 1.0, 0, 0 ], labeled: false },
+{ name: "B", type: "Free", pos: [ -1, 1, 1], color: [ 1.0, 0, 0 ], labeled: false },
+{ name: "v", type: "Free", pos: [ 1, 2, 1], color: [ 0, 0, 0 ], labeled: true },],
+ports: [
+{ id: "CSCanvas", transform: [ { visibleRect: [ -3, 3, 3, -3 ] } ], background: "white"} ]});
+
+function fontsize() {
+    var size=1/28*document.getElementById("CSCanvas").clientHeight;
+    cdy.evokeCS('textSize='+size+';');
+  }
+
+window.onload = fontsize;
+window.onresize = fontsize;
+
+</script>
+
+</head>
+
+<body>
+  <div id="CSCanvas"></div>
+</body>
+</html>
