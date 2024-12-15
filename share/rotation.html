@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>rotation</title>
+<script type="text/javascript" src="http://cinderella.de/CindyJS/latest/Cindy.js"></script>
+
+<script id="grid" type="text/x-cindyscript">
+drawarrow(a,b,col):=(
+   n=b-a;
+   n=n/|n|*.5;
+   p=(n_2,-n_1);
+   draw(a,b,color->col,size->3);
+   draw(b-n*.17+p*.07,b,color->col,size->3);
+   draw(b-n*.17-p*.07,b,color->col,size->3);
+ht
+);
+
+repeat(4,
+draw(line((0,1,-(#-1))),color->(169/255,169/255,169/255),size->1);
+draw(line((0,1,#-1)),color->(169/255,169/255,169/255),size->1);
+draw(line((1,0,-(#-1))),color->(169/255,169/255,169/255),size->1);
+draw(line((1,0,#-1)),color->(169/255,169/255,169/255),size->1);
+);
+drawarrow((0,0),((1,0,1)).xy,(169/255,169/255,169/255));
+drawarrow((0,0),((0,1,1)).xy,(169/255,169/255,169/255));
+
+par=(|C.xy-A.xy|/(|A.xy-B.xy|));
+phi=2*pi*par;
+drawtext((1,2.2), par*360+" °" , align->"left", size->30);
+rot=[[cos(phi),-sin(phi),0],[sin(phi),cos(phi),0],[0,0,1]];
+repeat(4,
+draw(line(rot*(0,1,-(#-1))));
+draw(line(rot*(0,1,#-1)));
+draw(line(rot*(1,0,-(#-1))));
+draw(line(rot*(1,0,#-1)));
+);
+drawarrow((0,0),(rot*(1,0,1)).xy,(1,0,0));
+drawarrow((0,0),(rot*(0,1,1)).xy,(1,0,0));
+</script>
+
+<script type="text/javascript">
+CindyJS({
+scripts: "cs*",
+scripts: "grid",
+defaultAppearance: { fontFamily: "sans-serif", lineSize: 1, pointSize: 5.0, textsize: 12.0 },
+angleUnit: "?",
+geometry: [
+{ name: "A", type: "Free", pos: [ 0, 2, 1], color: [ 1.0, 0, 0 ], pinned:true, labeled: false },
+{ name: "B", type: "Free", pos: [ 2, 2, 1], color: [ 1.0, 0, 0 ], pinned:true, labeled: false },
+{ name: "a", type: "Segment", color: [ 1.0, 0.0, 0 ], args: [ "A", "B" ], labeled: false },
+{ name: "C", type: "PointOnSegment", pos: [ .25, 2.0, 1 ], color: [ 1.0, 0.0, 0.0 ], args: [ "a" ], labeled: false } ],
+ports: [
+{ id: "CSCanvas", width:500, height: 500, transform: [ { visibleRect: [ -3, 3, 3, -3 ] } ], background: "white"} ],
+cinderella: { build: 1835, version: [ 2, 9, 1835 ] } });
+</script>
+
+</head>
+
+<body>
+    <canvas id="CSCanvas"></canvas>
+</body>
+</html>
