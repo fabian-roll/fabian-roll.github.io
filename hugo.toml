@@ -25,3 +25,6 @@ theme = "blowfish"
 
 [params.list]
   showTableOfContents = true 
+
+[outputs]
+  home = ["HTML","JSON"]
